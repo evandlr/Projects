@@ -1,0 +1,11 @@
+Ideas:
+-class for black and white pieces
+-class for movement type of piece
+-id for each specific piece (so i can delete them)
+-highlight pieces when clicked (to show being selected)
+-when click on square without current color piece,
+--check if piece can go there
+--check if it would take a piece
+--delete id of piece being taken
+--move id of piece being moved to space
+-keep track of turn with basic value
