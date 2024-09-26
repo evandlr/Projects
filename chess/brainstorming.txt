@@ -1,9 +1,7 @@
 todo:
 -fix pieces being able to move through pieces (just do a for loop for positions in way or smth)
--add turn system (just add a clause only letting white move if turn is odd and black if turn is even or smth)
 -rework pawns (do this last fuck en passant and first move two square move and promotion)
 -fix scaling with tab size
--fix background being messy
 -make it not use stolen assets so i can actually release it
 -add checkmate (super easy)
 -add check (not so easy)
