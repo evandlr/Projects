@@ -10,14 +10,18 @@
     opacity: 0;
 }
 
-.empty{
-    width: 0;
+body{
+    background-color: #314a75;
 }
 
 .board{
+    background-size: contain;
+    background-repeat: no-repeat;
     background-image: url(https://images.chesscomfiles.com/chess-themes/boards/green/150.png);
 }
 
 .row{
     display: flex;
+    height: 12.5vh;
+    width: 100vw;
 }

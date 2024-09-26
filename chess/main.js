@@ -1,11 +1,12 @@
 $(".nothing").attr('draggable', false);
 
 $("img").draggable({
-    grid: [150, 150],
+    containment: ".board",
 })
 
 $("img").droppable({
     drop: function(event, ui){
+        globalThis.accCheck = "f"
         console.log(ui.draggable.attr('style'))
         let splitAttClasses = ui.draggable.attr('class').split(' ');
         let splitDefClasses = $(this).attr('class').split(' ');
@@ -33,29 +34,21 @@ $("img").droppable({
         else if (attType === "king"){
             if (Math.abs(y2 - y1) <= 1 && Math.abs(x2 - x1) <= 1){
                 globalThis.accCheck = "t";
-            } else{
-                globalThis.accCheck = "f";
             }
         }
         else if (attType === "rook"){
             if (y2 - y1 === 0 || x2 - x1 === 0){
                 globalThis.accCheck = "t";
-            } else{
-                globalThis.accCheck = "f";
             }
         }
         else if (attType === "queen"){
             if (Math.abs((y2 - y1) / (x2 - x1)) === 1 || y2 - y1 === 0 || x2 - x1 === 0){
                 globalThis.accCheck = "t";
-            } else{
-                globalThis.accCheck = "f";
             }
         }
         else if (attType === "knight"){
             if (Math.abs(y2 - y1) + Math.abs(x2 - x1) === 3 && (Math.abs((y2 - y1) / (x2 - x1)) === 0.5 || Math.abs((y2 - y1) / (x2 - x1)) === 2)){
                 globalThis.accCheck = "t";
-            } else{
-                globalThis.accCheck = "f";
             }
         }
         else if (attType === "pawn"){
@@ -63,28 +56,20 @@ $("img").droppable({
                 if (defColor === "black"){
                     if (y1 - y2 === 1 && Math.abs(x2 - x1) === 1){
                         globalThis.accCheck = "t";
-                    } else{
-                        globalThis.accCheck = "f";
                     }
                 } else{
                     if (y1 - y2 === 1 && x2 - x1 === 0){
                         globalThis.accCheck = "t";
-                    } else{
-                        globalThis.accCheck = "f";
                     }
                 }
             } else{
                 if (defColor === "white"){
                     if (y2 - y1 === 1 && Math.abs(x2 - x1) === 1){
                         globalThis.accCheck = "t";
-                    } else{
-                        globalThis.accCheck = "f";
                     }
                 } else{
                     if (y2 - y1 === 1 && x2 - x1 === 0){
                         globalThis.accCheck = "t";
-                    } else{
-                        globalThis.accCheck = "f";
                     }
                 }
             }

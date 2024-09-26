@@ -1,11 +1,15 @@
-Ideas:
--class for black and white pieces
--class for movement type of piece
--id for each specific piece (so i can delete them)
--highlight pieces when clicked (to show being selected)
--when click on square without current color piece,
---check if piece can go there
---check if it would take a piece
---delete id of piece being taken
---move id of piece being moved to space
--keep track of turn with basic value
+todo:
+-fix pieces being able to move through pieces (just do a for loop for positions in way or smth)
+-add turn system (just add a clause only letting white move if turn is odd and black if turn is even or smth)
+-rework pawns (do this last fuck en passant and first move two square move and promotion)
+-fix scaling with tab size
+-fix background being messy
+-make it not use stolen assets so i can actually release it
+-add checkmate (super easy)
+-add check (not so easy)
+-add pins (hard)
+-highlight squares that the held piece can move to (makes coding life easier too)
+-add castling (also annoying like pawns)
+-later project, add system to store moves and export as same move system as chess.com
+-later later project, code some little shitty bots to figure out how tf that works
+-menus, pretty text, make the head not the default on my ide
