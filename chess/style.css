@@ -9,3 +9,15 @@
 .nothing{
     opacity: 0;
 }
+
+.empty{
+    width: 0;
+}
+
+.board{
+    background-image: url(https://images.chesscomfiles.com/chess-themes/boards/green/150.png);
+}
+
+.row{
+    display: flex;
+}

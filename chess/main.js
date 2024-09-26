@@ -1,11 +1,12 @@
 $(".nothing").attr('draggable', false);
 
 $("img").draggable({
-    grid: [154, 154]
+    grid: [150, 150],
 })
 
 $("img").droppable({
     drop: function(event, ui){
+        console.log(ui.draggable.attr('style'))
         let splitAttClasses = ui.draggable.attr('class').split(' ');
         let splitDefClasses = $(this).attr('class').split(' ');
         let attColor = splitAttClasses[0];
@@ -51,7 +52,7 @@ $("img").droppable({
             }
         }
         else if (attType === "knight"){
-            if (Math.abs((y2 - y1) / (x2 - x1)) === 0.5 || Math.abs((y2 - y1) / (x2 - x1)) === 2){
+            if (Math.abs(y2 - y1) + Math.abs(x2 - x1) === 3 && (Math.abs((y2 - y1) / (x2 - x1)) === 0.5 || Math.abs((y2 - y1) / (x2 - x1)) === 2)){
                 globalThis.accCheck = "t";
             } else{
                 globalThis.accCheck = "f";
@@ -88,12 +89,11 @@ $("img").droppable({
                 }
             }
         }
+        ui.draggable.css({'left': '0px', 'top': '0px'});
         if (accCheck === "t"){
-            $(this).className = ui.draggable.attr('class');
-
-        }
-        else{
-
+            $(this).attr('src', ui.draggable.attr('src'));
+            $(this).attr('class', ui.draggable.attr('class'));
+            ui.draggable.attr('class', 'nothing' )
         }
     }
 });
