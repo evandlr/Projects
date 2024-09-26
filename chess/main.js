@@ -1,10 +1,14 @@
 $(".nothing").attr('draggable', false);
-
+globalThis.turn = 1;
 $("img").draggable({
     containment: ".board",
+    start: function(event, ui){
+        $(this).addClass("priority");
+    }
 })
 
 $("img").droppable({
+    tolerance: "pointer",
     drop: function(event, ui){
         globalThis.accCheck = "f"
         console.log(ui.draggable.attr('style'))
@@ -21,7 +25,7 @@ $("img").droppable({
         let x1 = parseFloat(attPos.charAt(2));
         let x2 = parseFloat(defPos.charAt(2));
         console.log(attColor, defColor, attType, defType, x1, x2, y1, y2);
-        if (attColor === defColor){
+        if (attColor === defColor || (turn % 2 === 1 && attColor === "black") || (turn % 2 === 0 && attColor === "white")){
             globalThis.accCheck = "f";
         }
         else if (attType === "bishop"){
@@ -74,11 +78,13 @@ $("img").droppable({
                 }
             }
         }
+        ui.draggable.removeClass('priority');
         ui.draggable.css({'left': '0px', 'top': '0px'});
         if (accCheck === "t"){
             $(this).attr('src', ui.draggable.attr('src'));
             $(this).attr('class', ui.draggable.attr('class'));
             ui.draggable.attr('class', 'nothing' )
+            globalThis.turn += 1;
         }
     }
 });
