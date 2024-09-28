@@ -7,6 +7,7 @@ body{
 }
 
 .board{
+    width: 100vh;
     background-size: contain;
     background-repeat: no-repeat;
     background-image: url(https://images.chesscomfiles.com/chess-themes/boards/green/150.png);
@@ -15,11 +16,7 @@ body{
 .row{
     display: flex;
     height: 12.5vh;
-    width: 100vw;
-}
-
-.priority{
-    z-index: 1;
+    width: 100vh;
 }
 
 img{
