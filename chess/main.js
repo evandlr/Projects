@@ -28,21 +28,23 @@ $("img").droppable({
         let x1 = parseFloat(attPos.charAt(2));
         let x2 = parseFloat(defPos.charAt(2));
         if (attColor === defColor || (turn % 2 === 1 && attColor === "black") || (turn % 2 === 0 && attColor === "white")){
-            globalThis.accCheck = "f";
+            accCheck = "f";
         }
         else if (attType === "bishop"){
             if (Math.abs((y2 - y1) / (x2 - x1)) === 1){
                 for(let i = y2, j = x2; i !== y1; i += Math.sign(y1-y2), j += Math.sign(x1 - x2)) {
                     var currentPos = String(i) + "_" + String(j);
                     if (document.getElementById(currentPos).className.includes("nothing") !== true){
-                        globalThis.accCheck = "f";
+                        if (currentPos !== $(this).attr("id")){
+                            accCheck = "f";
+                        }
                     }
                 }
-            }else{globalThis.accCheck = "f";}
+            }else{accCheck = "f";}
         }
         else if (attType === "king"){
             if (Math.abs(y2 - y1) > 1 || Math.abs(x2 - x1) > 1){
-                globalThis.accCheck = "f";
+                accCheck = "f";
             }
         }
         else if (attType === "rook"){
@@ -50,7 +52,9 @@ $("img").droppable({
                 for (let i = x2; i !== x1 ; i += Math.sign(x1-x2)) {
                     var currentPos = String(y2) + "_" + String(i);
                     if (document.getElementById(currentPos).className.includes("nothing") !== true){
-                        globalThis.accCheck = "f";
+                        if (currentPos !== $(this).attr("id")){
+                            accCheck = "f";
+                        }
                     }
                 }
             }
@@ -58,18 +62,22 @@ $("img").droppable({
                 for (let i = y2; i !== y1 ; i += Math.sign(y1-y2)) {
                     var currentPos = String(i) + "_" + String(x2);
                     if (document.getElementById(currentPos).className.includes("nothing") !== true){
-                        globalThis.accCheck = "f";
+                        if (currentPos !== $(this).attr("id")){
+                            accCheck = "f";
+                        }
                     }
                 }
             }
-            else{globalThis.accCheck = 'f';}
+            else{accCheck = 'f';}
         }
         else if (attType === "queen"){
             if (Math.abs((y2 - y1) / (x2 - x1)) === 1){
                 for(let i = y2, j = x2; i !== y1; i += Math.sign(y1-y2), j += Math.sign(x1 - x2)) {
                     var currentPos = String(i) + "_" + String(j);
                     if (document.getElementById(currentPos).className.includes("nothing") !== true){
-                        globalThis.accCheck = "f";
+                        if (currentPos !== $(this).attr("id")){
+                            accCheck = "f";
+                        }
                     }
                 }
             }
@@ -77,7 +85,9 @@ $("img").droppable({
                 for (let i = x2; i !== x1 ; i += Math.sign(x1-x2)) {
                     var currentPos = String(y2) + "_" + String(i);
                     if (document.getElementById(currentPos).className.includes("nothing") !== true){
-                        globalThis.accCheck = "f";
+                        if (currentPos !== $(this).attr("id")){
+                            accCheck = "f";
+                        }
                     }
                 }
             }
@@ -85,45 +95,74 @@ $("img").droppable({
                 for (let i = y2; i !== y1 ; i += Math.sign(y1-y2)) {
                     var currentPos = String(i) + "_" + String(x2);
                     if (document.getElementById(currentPos).className.includes("nothing") !== true){
-                        globalThis.accCheck = "f";
+                        if (currentPos !== $(this).attr("id")){
+                            accCheck = "f";
+                        }
                     }
                 }
             }
-            else{globalThis.accCheck = 'f';}
+            else{accCheck = 'f';}
         }
         else if (attType === "knight"){
             if (Math.abs(y2 - y1) + Math.abs(x2 - x1) !== 3 || ((Math.abs((y2 - y1) / (x2 - x1)) !== 0.5 && Math.abs((y2 - y1) / (x2 - x1)) !== 2))){
-                globalThis.accCheck = "f";
+                accCheck = "f";
             }
         }
         else if (attType === "pawn"){
             if (attColor === "white"){
                 if (defColor === "black"){
                     if (y1 - y2 !== 1 || Math.abs(x2 - x1) !== 1){
-                        globalThis.accCheck = "f";
+                        accCheck = "f";
                     }
                 } else{
                     if (y1 - y2 !== 1 || x2 - x1 !== 0){
-                        globalThis.accCheck = "f";
+                        accCheck = "f";
                     }
                 }
             } else{
                 if (defColor === "white"){
                     if (y2 - y1 !== 1 || Math.abs(x2 - x1) !== 1){
-                        globalThis.accCheck = "f";
+                        accCheck = "f";
                     }
                 } else{
                     if (y2 - y1 !== 1 || x2 - x1 !== 0){
-                        globalThis.accCheck = "f";
+                        accCheck = "f";
                     }
                 }
             }
         }
         if (accCheck === "t"){
+            let pieces = [
+                {class: "white,pawn", text: "♙"},
+                {class: "black,pawn", text: "♟"},
+                {class: "white,queen", text: "♕"},
+                {class: "black,queen", text: "♛"},
+                {class: "white,king", text: "♔"},
+                {class: "black,king", text: "♚"},
+                {class: "white,rook", text: "♖"},
+                {class: "black,rook", text: "♜"},
+                {class: "white,bishop", text: "♗"},
+                {class: "black,bishop", text: "♝"},
+                {class: "white,knight", text: "♘"},
+                {class: "black,knight", text: "♞"}
+            ];
+            let words = ui.draggable.attr("class").split(" ").splice(0, 2).join();
+
+            for (let i = 0; i !== pieces.length; i += 1){
+                if (pieces[i].class === words){
+                    globalThis.piece = pieces[i].text;
+                    break;
+                }
+            }
+            let pos = $(this).attr("id").split("_");
+            [pos[0], pos[1]] = [pos[1], pos[0]];
+            pos[0] = String.fromCharCode(pos[0].charCodeAt(0) + 16);
+            pos[1] = 9 - parseInt(pos[1])
+            $(".moves").append("<p>", piece, pos, "<p>");
             $(this).attr('src', ui.draggable.attr('src'));
             $(this).attr('class', ui.draggable.attr('class'));
             ui.draggable.attr('class', 'nothing' )
-            globalThis.turn += 1;
+            turn += 1;
         }
     }
 });

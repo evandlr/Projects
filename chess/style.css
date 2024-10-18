@@ -4,6 +4,7 @@
 
 body{
     background-color: #314a75;
+    display: flex;
 }
 
 .board{
@@ -21,4 +22,9 @@ body{
 
 img{
     z-index: 0;
+}
+
+.moves{
+    display: flex;
+    width: 10vh;
 }
