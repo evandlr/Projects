@@ -274,6 +274,21 @@ function check(color) {
             } break
         }
     }
+    let phrase = color + " knight"
+    console.log(phrase)
+    let knightLocations = $(document.getElementsByClassName(phrase))
+    for (let i = 0; i < knightLocations.length; i++) {
+        let pos = $(knightLocations[i]).attr('id')
+        let y2 = Number(pos[0])
+        let x2 = Number(pos[2])
+        let y1 = kingPos[0]
+        let x1 = kingPos[1]
+
+        if (Math.abs(y2 - y1) + Math.abs(x2 - x1) === 3 && (Math.abs((y2 - y1)/ (x2 - x1)) === 0.5 || Math.abs((y2 - y1)/ (x2 - x1)) === 2)){
+            console.log("huh")
+            counter += 1
+        }
+    }
     //gotta check for knights still
     return counter
 }
