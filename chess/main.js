@@ -1,6 +1,7 @@
-$(".nothing").attr('draggable', false);
+
 globalThis.turn = 1;
 $("img").draggable({
+    cancel: ".nothing",
     containment: ".board",
     start: function(event, ui){
         $(this).css({'z-index': '1'});
@@ -14,10 +15,8 @@ $("img").droppable({
     tolerance: 'pointer',
     drop: function(event, ui){
         globalThis.accCheck = "t";
-        console.log(ui.draggable.attr('style'));
         let splitAttClasses = ui.draggable.attr('class').split(' ');
         let splitDefClasses = $(this).attr('class').split(' ');
-        console.log(splitAttClasses);
         const attColor = splitAttClasses[0];
         const defColor = splitDefClasses[0];
         const attType = splitAttClasses[1];
@@ -176,11 +175,91 @@ $("img").droppable({
             $(this).attr('src', ui.draggable.attr('src'));
             $(this).attr('class', ui.draggable.attr('class'));
             ui.draggable.attr('class', 'nothing' )
+            check(attColor)
             turn += 1;
         }
     }
 });
 
-function kingCheck(kingPos){
-    console.log("really working on this")
+function check(color) {
+    if (color === "white"){
+        globalThis.checkColor = "black king"
+    } else{
+        globalThis.checkColor = "white king"
+    }
+    let kingPos = $(document.getElementsByClassName(checkColor)[0]).attr('id')
+    kingPos = [Number(kingPos[0]), Number(kingPos[2])]
+    for (let i = kingPos[0] + 1; i < 9; i += 1){
+        let currentPos = String(i) + "_" + kingPos[1];
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
+                console.log("check")
+            } break
+        }
+    }
+    for (let i = kingPos[0] - 1; i > 0; i -= 1){
+        let currentPos = String(i) + "_" + kingPos[1];
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
+                console.log("check")
+            } break
+        }
+    }
+    for (let i = kingPos[1] + 1; i < 9; i += 1){
+        let currentPos = kingPos[0] + "_" + String(i);
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
+                console.log("check")
+            } break
+        }
+    }
+    for (let i = kingPos[1] - 1; i > 0; i -= 1){
+        let currentPos = kingPos[0] + "_" + String(i);
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
+                console.log("check")
+            } break
+        }
+    }
+    for(let i = kingPos[0] + 1, j = kingPos[1] + 1; i < 9 && j < 9; i += 1, j += 1) {
+        var currentPos = String(i) + "_" + String(j);
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === 1 && currentThing.includes("pawn") && color === "white"))){
+                console.log("check")
+            } break
+        }
+    }
+    for(let i = kingPos[0] - 1, j = kingPos[1] + 1; i > 0 && j < 9; i -= 1, j += 1) {
+        var currentPos = String(i) + "_" + String(j);
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === -1 && currentThing.includes("pawn") && color === "black"))){
+                console.log("check")
+            } break
+        }
+    }
+    for(let i = kingPos[0] + 1, j = kingPos[1] - 1; i < 9 && j > 0; i += 1, j -= 1) {
+        var currentPos = String(i) + "_" + String(j);
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === 1 && currentThing.includes("pawn") && color === "white"))){
+                console.log("check")
+            } break
+        }
+    }
+    for(let i = kingPos[0] - 1, j = kingPos[1] - 1; i > 0 && j > 0; i -= 1, j -= 1) {
+        var currentPos = String(i) + "_" + String(j);
+        const currentThing = document.getElementById(currentPos).className
+        if (currentThing.includes("nothing") !== true) {
+            if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === -1 && currentThing.includes("pawn") && color === "black"))){
+                console.log("check")
+            } break
+        }
+    }
+    //gotta check for knights still
 }
