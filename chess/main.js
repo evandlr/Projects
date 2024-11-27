@@ -13,20 +13,21 @@ $("img").draggable({
 $("img").droppable({
     tolerance: 'pointer',
     drop: function(event, ui){
-        globalThis.accCheck = "t"
-        console.log(ui.draggable.attr('style'))
+        globalThis.accCheck = "t";
+        console.log(ui.draggable.attr('style'));
         let splitAttClasses = ui.draggable.attr('class').split(' ');
         let splitDefClasses = $(this).attr('class').split(' ');
-        let attColor = splitAttClasses[0];
-        let defColor = splitDefClasses[0];
-        let attType = splitAttClasses[1];
-        let defType = splitDefClasses[1];
-        let attPos = ui.draggable.attr('id');
+        console.log(splitAttClasses);
+        const attColor = splitAttClasses[0];
+        const defColor = splitDefClasses[0];
+        const attType = splitAttClasses[1];
+        const defType = splitDefClasses[1];
+        const attPos = ui.draggable.attr('id');
         let defPos = $(this).attr('id');
-        let y1 = parseFloat(attPos);
-        let y2 = parseFloat(defPos);
-        let x1 = parseFloat(attPos.charAt(2));
-        let x2 = parseFloat(defPos.charAt(2));
+        const y1 = parseFloat(attPos);
+        const y2 = parseFloat(defPos);
+        const x1 = parseFloat(attPos.charAt(2));
+        const x2 = parseFloat(defPos.charAt(2));
         if (attColor === defColor || (turn % 2 === 1 && attColor === "black") || (turn % 2 === 0 && attColor === "white")){
             accCheck = "f";
         }
@@ -109,13 +110,19 @@ $("img").droppable({
             }
         }
         else if (attType === "pawn"){
+            if (splitAttClasses[2] === "0"){
+                globalThis.extraOption = 2
+            }
+            else{
+                globalThis.extraOption = 1
+            }
             if (attColor === "white"){
                 if (defColor === "black"){
                     if (y1 - y2 !== 1 || Math.abs(x2 - x1) !== 1){
                         accCheck = "f";
                     }
                 } else{
-                    if (y1 - y2 !== 1 || x2 - x1 !== 0){
+                    if ((y1 - y2 !== 1 && y1 - y2 !== extraOption)|| x2 - x1 !== 0){
                         accCheck = "f";
                     }
                 }
@@ -125,9 +132,16 @@ $("img").droppable({
                         accCheck = "f";
                     }
                 } else{
-                    if (y2 - y1 !== 1 || x2 - x1 !== 0){
+                    if ((y2 - y1 !== 1 && y2 - y1 !== extraOption)|| x2 - x1 !== 0){
                         accCheck = "f";
                     }
+                }
+            }
+            if (accCheck === "t"){
+                if (Math.abs(y2 - y1) === 2){
+                    ui.draggable.attr('class', ui.draggable.attr('class').slice(0, 11) + "1" + ui.draggable.attr('class').slice(12))
+                } else{
+                    ui.draggable.attr('class', ui.draggable.attr('class').slice(0, 11) + "2" + ui.draggable.attr('class').slice(12))
                 }
             }
         }
@@ -166,3 +180,7 @@ $("img").droppable({
         }
     }
 });
+
+function kingCheck(kingPos){
+    console.log("really working on this")
+}
