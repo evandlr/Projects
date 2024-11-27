@@ -180,21 +180,12 @@ $("img").droppable({
             } else{
                 globalThis.defCheck = check("white")
             }
-            console.log(defCheck)
-            if (defCheck === 0){
-                $(document.getElementsByClassName(checkColor)[0]).attr('class', $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(0, 11) + "saved" + $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(16))
-            }
-            console.log(document.getElementsByClassName("check")[0])
-            if (document.getElementsByClassName("check")[0] !== undefined){
+            if (defCheck !== 0){
                 alert("YOU ARE IN CHECK DUMMY");
                 $(this).attr('class', 'nothing');
                 ui.draggable.attr('class', savedInfo)
             } else {
                 $(".moves").append("<p>", piece, pos, "<p>");
-                let amount = check(attColor)
-                if (amount > 0) {
-                    $(document.getElementsByClassName(checkColor)[0]).attr('class', $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(0, 11) + "check" + $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(16))
-                }
                 turn += 1;
             }
         }
