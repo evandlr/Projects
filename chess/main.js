@@ -171,12 +171,32 @@ $("img").droppable({
             [pos[0], pos[1]] = [pos[1], pos[0]];
             pos[0] = String.fromCharCode(pos[0].charCodeAt(0) + 16);
             pos[1] = 9 - parseInt(pos[1])
-            $(".moves").append("<p>", piece, pos, "<p>");
             $(this).attr('src', ui.draggable.attr('src'));
             $(this).attr('class', ui.draggable.attr('class'));
+            let savedInfo = ui.draggable.attr('class');
             ui.draggable.attr('class', 'nothing' )
-            check(attColor)
-            turn += 1;
+            if (attColor === "white"){
+                globalThis.defCheck = check("black")
+            } else{
+                globalThis.defCheck = check("white")
+            }
+            console.log(defCheck)
+            if (defCheck === 0){
+                $(document.getElementsByClassName(checkColor)[0]).attr('class', $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(0, 11) + "saved" + $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(16))
+            }
+            console.log(document.getElementsByClassName("check")[0])
+            if (document.getElementsByClassName("check")[0] !== undefined){
+                alert("YOU ARE IN CHECK DUMMY");
+                $(this).attr('class', 'nothing');
+                ui.draggable.attr('class', savedInfo)
+            } else {
+                $(".moves").append("<p>", piece, pos, "<p>");
+                let amount = check(attColor)
+                if (amount > 0) {
+                    $(document.getElementsByClassName(checkColor)[0]).attr('class', $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(0, 11) + "check" + $(document.getElementsByClassName(checkColor)[0]).attr('class').slice(16))
+                }
+                turn += 1;
+            }
         }
     }
 });
@@ -187,14 +207,16 @@ function check(color) {
     } else{
         globalThis.checkColor = "white king"
     }
-    let kingPos = $(document.getElementsByClassName(checkColor)[0]).attr('id')
+    globalThis.counter = 0
+    let king = $(document.getElementsByClassName(checkColor)[0])
+    let kingPos = king.attr('id')
     kingPos = [Number(kingPos[0]), Number(kingPos[2])]
     for (let i = kingPos[0] + 1; i < 9; i += 1){
         let currentPos = String(i) + "_" + kingPos[1];
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
@@ -203,7 +225,7 @@ function check(color) {
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
@@ -212,7 +234,7 @@ function check(color) {
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
@@ -221,7 +243,7 @@ function check(color) {
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("rook") || currentThing.includes("queen"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
@@ -230,7 +252,7 @@ function check(color) {
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === 1 && currentThing.includes("pawn") && color === "white"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
@@ -239,7 +261,7 @@ function check(color) {
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === -1 && currentThing.includes("pawn") && color === "black"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
@@ -248,7 +270,7 @@ function check(color) {
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === 1 && currentThing.includes("pawn") && color === "white"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
@@ -257,9 +279,10 @@ function check(color) {
         const currentThing = document.getElementById(currentPos).className
         if (currentThing.includes("nothing") !== true) {
             if (currentThing.includes(color) && (currentThing.includes("bishop") || currentThing.includes("queen") || (i - kingPos[0] === -1 && currentThing.includes("pawn") && color === "black"))){
-                console.log("check")
+                counter += 1
             } break
         }
     }
     //gotta check for knights still
+    return counter
 }
