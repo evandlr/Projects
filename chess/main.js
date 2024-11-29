@@ -28,7 +28,6 @@ $("img").droppable({
         globalThis.y2 = parseFloat(defPos);
         const x1 = parseFloat(attPos.charAt(2));
         globalThis.x2 = parseFloat(defPos.charAt(2));
-        console.log(y2, x2)
         if (attColor === defColor || (turn % 2 === 1 && attColor === "black") || (turn % 2 === 0 && attColor === "white")){
             accCheck = "f";
         }
@@ -215,6 +214,13 @@ $("img").droppable({
                         tempVar = $(document.getElementById(String(y2) + "_8")).attr('src');
                         $(document.getElementById(String(y2) + "_8")).attr('src', $(document.getElementById(String(y2) + "_6")).attr('src'));
                         $(document.getElementById(String(y2) + "_6")).attr('src', tempVar);
+                    } else{
+                        let tempVar = document.getElementById(String(y2) + "_1").className;
+                        $(document.getElementById(String(y2) + "_1")).attr('class', document.getElementById(String(y2) + "_4").className);
+                        $(document.getElementById(String(y2) + "_4")).attr('class', tempVar);
+                        tempVar = $(document.getElementById(String(y2) + "_1")).attr('src');
+                        $(document.getElementById(String(y2) + "_1")).attr('src', $(document.getElementById(String(y2) + "_4")).attr('src'));
+                        $(document.getElementById(String(y2) + "_4")).attr('src', tempVar);
                     }
                 }
                 $(".moves").append("<p>", piece, pos, "<p>");
@@ -316,7 +322,6 @@ function check(color) {
         let x1 = kingPos[1]
 
         if (Math.abs(y2 - y1) + Math.abs(x2 - x1) === 3 && (Math.abs((y2 - y1)/ (x2 - x1)) === 0.5 || Math.abs((y2 - y1)/ (x2 - x1)) === 2)){
-            console.log("huh")
             counter += 1
         }
     }
