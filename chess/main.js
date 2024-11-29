@@ -14,6 +14,7 @@ $("img").draggable({
 $("img").droppable({
     tolerance: 'pointer',
     drop: function(event, ui){
+        globalThis.justCastle = 0
         globalThis.accCheck = "t";
         let splitAttClasses = ui.draggable.attr('class').split(' ');
         let splitDefClasses = $(this).attr('class').split(' ');
@@ -24,9 +25,10 @@ $("img").droppable({
         const attPos = ui.draggable.attr('id');
         let defPos = $(this).attr('id');
         const y1 = parseFloat(attPos);
-        const y2 = parseFloat(defPos);
+        globalThis.y2 = parseFloat(defPos);
         const x1 = parseFloat(attPos.charAt(2));
-        const x2 = parseFloat(defPos.charAt(2));
+        globalThis.x2 = parseFloat(defPos.charAt(2));
+        console.log(y2, x2)
         if (attColor === defColor || (turn % 2 === 1 && attColor === "black") || (turn % 2 === 0 && attColor === "white")){
             accCheck = "f";
         }
@@ -42,9 +44,27 @@ $("img").droppable({
                 }
             }else{accCheck = "f";}
         }
-        else if (attType === "king"){
-            if (Math.abs(y2 - y1) > 1 || Math.abs(x2 - x1) > 1){
+        else if (attType === "king") {
+            if (attColor === "white") {
+                globalThis.side = 8
+            } else {
+                globalThis.side = 1
+            }
+            if (y2 === side && (x2 - x1) > 1 && document.getElementById(String(side) + "_8").className.includes("castle") && document.getElementById(String(side) + "_6").className.includes("nothing")) {
+                x2 = 7
+                justCastle = 1
+                console.log("right castle")
+            } else if (y2 === side && (x2 - x1) < -1 && document.getElementById(String(side) + "_1").className.includes("castle") && document.getElementById(String(side) + "_4").className.includes("nothing") && document.getElementById(String(side) + "_3").className.includes("nothing") && document.getElementById(String(side) + "_2").className.includes("nothing")) {
+                x2 = 3
+                justCastle = 1
+                console.log("left castle")
+            } else if (Math.abs(y2 - y1) > 1 || Math.abs(x2 - x1) > 1){
                 accCheck = "f";
+            } if (accCheck === "t"){
+                let fixes = $(document.getElementsByClassName(attColor + " rook"))
+                for (let i = 0; i < fixes.length; i++){
+                    fixes[i].className = $(fixes[i]).attr('class').replace(' castle', '')
+                }
             }
         }
         else if (attType === "rook"){
@@ -167,12 +187,11 @@ $("img").droppable({
                     break;
                 }
             }
-            let pos = $(this).attr("id").split("_");
-            [pos[0], pos[1]] = [pos[1], pos[0]];
+            let pos = [String(x2), String(y2)];
             pos[0] = String.fromCharCode(pos[0].charCodeAt(0) + 16);
             pos[1] = 9 - parseInt(pos[1])
-            $(this).attr('src', ui.draggable.attr('src'));
-            $(this).attr('class', ui.draggable.attr('class'));
+            $(document.getElementById(String(y2) + "_" + String(x2))).attr('src', ui.draggable.attr('src'));
+            $(document.getElementById(String(y2) + "_" + String(x2))).attr('class', ui.draggable.attr('class'));
             let savedInfo = ui.draggable.attr('class');
             ui.draggable.attr('class', 'nothing' )
             if (attColor === "white"){
@@ -182,9 +201,22 @@ $("img").droppable({
             }
             if (defCheck !== 0){
                 alert("YOU ARE IN CHECK DUMMY");
-                $(this).attr('class', 'nothing');
+                $(document.getElementById(String(y2) + "_" + String(x2))).attr('class', 'nothing');
                 ui.draggable.attr('class', savedInfo)
             } else {
+                if(attType === 'rook'){
+                    document.getElementById(String(y2) + "_" + String(x2)).className = $(document.getElementById(String(y2) + "_" + String(x2))).attr('class').replace(' castle', '')
+                    console.log(ui.draggable.attr)
+                } else if (justCastle === 1){
+                    if (x2 === 7){
+                        let tempVar = document.getElementById(String(y2) + "_8").className;
+                        $(document.getElementById(String(y2) + "_8")).attr('class', document.getElementById(String(y2) + "_6").className);
+                        $(document.getElementById(String(y2) + "_6")).attr('class', tempVar);
+                        tempVar = $(document.getElementById(String(y2) + "_8")).attr('src');
+                        $(document.getElementById(String(y2) + "_8")).attr('src', $(document.getElementById(String(y2) + "_6")).attr('src'));
+                        $(document.getElementById(String(y2) + "_6")).attr('src', tempVar);
+                    }
+                }
                 $(".moves").append("<p>", piece, pos, "<p>");
                 turn += 1;
             }
@@ -275,7 +307,6 @@ function check(color) {
         }
     }
     let phrase = color + " knight"
-    console.log(phrase)
     let knightLocations = $(document.getElementsByClassName(phrase))
     for (let i = 0; i < knightLocations.length; i++) {
         let pos = $(knightLocations[i]).attr('id')
