@@ -199,7 +199,7 @@ $("img").droppable({
                 globalThis.defCheck = check("white")
             }
             if (defCheck !== 0){
-                alert("YOU ARE IN CHECK DUMMY");
+                alert("WAIT!!! You're in check!");
                 $(document.getElementById(String(y2) + "_" + String(x2))).attr('class', 'nothing');
                 ui.draggable.attr('class', savedInfo)
             } else {
@@ -214,6 +214,7 @@ $("img").droppable({
                         tempVar = $(document.getElementById(String(y2) + "_8")).attr('src');
                         $(document.getElementById(String(y2) + "_8")).attr('src', $(document.getElementById(String(y2) + "_6")).attr('src'));
                         $(document.getElementById(String(y2) + "_6")).attr('src', tempVar);
+                        pos = "O-O"
                     } else{
                         let tempVar = document.getElementById(String(y2) + "_1").className;
                         $(document.getElementById(String(y2) + "_1")).attr('class', document.getElementById(String(y2) + "_4").className);
@@ -221,9 +222,23 @@ $("img").droppable({
                         tempVar = $(document.getElementById(String(y2) + "_1")).attr('src');
                         $(document.getElementById(String(y2) + "_1")).attr('src', $(document.getElementById(String(y2) + "_4")).attr('src'));
                         $(document.getElementById(String(y2) + "_4")).attr('src', tempVar);
+                        pos = "O-O-O"
                     }
                 }
-                $(".moves").append("<p>", piece, pos, "<p>");
+                if (defColor !== "nothing"){
+                    pos = "x" + pos[0] + pos[1]
+                } else if (justCastle === 0){
+                    pos = pos[0] + pos[1]
+                }
+                if (turn % 2 === 1){
+                    globalThis.codeToAppend = "<tr>" + "<td style='border: 1px solid;'>" + String(Math.floor(turn/2 + 1))+ "</td> <td>" + piece + pos + "</td> <td id='last'></td>" + "</tr>"
+                    $(".moves").append( codeToAppend);
+                } else{
+                    globalThis.codeToAppend = piece + pos;
+                    $("#last").append(codeToAppend);
+                    $("#last").attr('id', '');
+                }
+                console.log(codeToAppend)
                 turn += 1;
             }
         }

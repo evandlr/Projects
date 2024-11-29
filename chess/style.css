@@ -24,7 +24,24 @@ img{
     z-index: 0;
 }
 
-.moves{
+table{
     display: flex;
-    width: 10vh;
+    flex-direction: column;
+    border: 1px solid;
+    width: 20%;
+}
+tr{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+th, td{
+    font-weight: lighter;
+    font-family: Verdana, Geneva, Tahoma sans-serif;
+    padding: .2em .2em .2em .2em;
+    width: 33%;
+    text-align: center;
+}
+th{
+    border: 1px solid;
 }
